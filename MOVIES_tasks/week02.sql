@@ -1,0 +1,68 @@
+﻿use movies;
+
+
+SELECT  title, year, studioname, address
+FROM MOVIE
+JOIN STUDIO ON STUDIONAME = NAME
+WHERE INCOLOR = 'y';
+
+SELECT M1.TITLE
+FROM MOVIE M1, MOVIE M2
+WHERE M2.TITLE = 'Star Wars'
+	AND M1.LENGTH > M2.LENGTH;
+
+SELECT NAME, TITLE 
+FROM MOVIESTAR
+JOIN STARSIN ON NAME = STARNAME
+JOIN MOVIE ON MOVIETITLE = TITLE AND MOVIEYEAR = YEAR
+WHERE GENDER = 'F' AND STUDIONAME = 'MGM';
+
+SELECT NAME 
+FROM MOVIESTAR
+JOIN STARSIN ON NAME = STARNAME
+WHERE MOVIETITLE = 'Terms of Endearment' AND GENDER = 'F';
+
+
+--Напишете заявка,
+--която извежда имената
+--на актрисите,
+--участвали в Terms of
+--Endearment.
+
+SELECT NAME
+FROM STARSIN
+JOIN MOVIESTAR ON STARNAME = NAME
+WHERE GENDER = 'F'
+	AND MOVIETITLE = 'Terms of Endearment';
+
+
+--Напишете заявка,
+--която извежда имената
+--на филмовите звезди,
+--участвали във филми
+--на студио MGM през
+--1995 г.
+
+SELECT NAME
+FROM MOVIESTAR
+JOIN STARSIN ON NAME = STARNAME
+JOIN MOVIE ON MOVIETITLE = TITLE AND MOVIEYEAR = YEAR
+WHERE STUDIONAME = 'MGM' AND  YEAR = 1995;
+
+
+(SELECT title, year
+FROM Movie
+WHERE incolor = 'y')
+UNION
+(SELECT movietitle, movieyear
+FROM StarsIn
+WHERE starname = 'Harrison Ford');
+
+(SELECT NAME, ADDRESS
+FROM MOVIEEXEC
+WHERE NETWORTH > 1000000)
+INTERSECT
+(SELECT NAME, ADDRESS 
+FROM MOVIESTAR
+WHERE GENDER = 'F');
+
