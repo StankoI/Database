@@ -69,7 +69,27 @@ GROUP BY CL.CLASS
 HAVING COUNT(DISTINCT SH.NAME) >= 3;
 
 
+/*За всеки кораб, който е от клас с име, несъдържащо буквите i и k, да се изведе името на кораба и през коя година е
+пуснат на вода (launched). Резултатът да бъде сортиран така, че първо да се извеждат най-скоро пуснатите кораби*/
 
+
+SELECT SH.NAME, SH.LAUNCHED
+FROM SHIPS SH
+JOIN CLASSES CL ON CL.CLASS = SH.CLASS
+WHERE CL.CLASS NOT LIKE '%i%' AND CL.CLASS NOT LIKE '%k%'
+ORDER BY SH.LAUNCHED DESC;
+
+
+/*Да се изведат имената на всички битки, в които е повреден (damaged) поне един японски кораб.*/
+
+SELECT OU1.BATTLE
+FROM OUTCOMES OU1
+WHERE 1 <= (
+			SELECT COUNT(CASE WHEN RESULT = 'damaged' THEN 1 ELSE NULL END)
+			FROM OUTCOMES OU2
+			JOIN SHIPS SH ON SH.NAME = OU2.SHIP
+			JOIN CLASSES CL ON CL.CLASS = SH.CLASS
+			WHERE COUNTRY = 'Japan' AND OU2.BATTLE = OU1.BATTLE)
 
 
 
